@@ -56,7 +56,7 @@ func (ts *TestSuite) TestMarkdown(c *C) {
 
 # How is everybody today?`}
 
-    html := p.HTML()
+    html, _ := p.HTML()
     c.Assert(html, Equals, T.HTML("<p>Hello, World!</p>\n\n<h1>How is everybody today?</h1>\n"))
 }
 
@@ -67,7 +67,7 @@ func (ts *TestSuite) TestInlineHTML(c *C) {
 
 <img class="round bbottom bleft" src="/foo.jpg" />`}
 
-    html := p.HTML()
+    html, _ := p.HTML()
     c.Assert(html, Equals, T.HTML("<p>Hello, World!</p>\n\n<h1>How is everybody today?</h1>\n\n<p><img class=\"round bbottom bleft\" src=\"/foo.jpg\" /></p>\n"))
 }
 
@@ -83,6 +83,19 @@ func (ts *TestSuite) TestClean(c *C) {
 * Foo
 * Bar
 * Baz`}
+
     clean := p.Clean()
     c.Assert(clean, Equals, "Hello, World! How is everybody today? Google Foo Bar Baz")
+}
+
+func (ts *TestSuite) TestImages(c *C) {
+    p := &post.Post{Body: `{{ .test.large }}`}
+    p.Images = map[string]map[string]string{
+        "test": {
+            "large": "http://cdn.host.com/batman.jpg",
+        },
+    }
+    html, err := p.HTML()
+    c.Assert(err, IsNil)
+    c.Assert(html, Equals, T.HTML("<p>http://cdn.host.com/batman.jpg</p>\n"))
 }

@@ -10,6 +10,7 @@ import (
     T "html/template"
     "regexp"
     "strings"
+    TT "text/template"
     "time"
 )
 
@@ -28,10 +29,27 @@ func (p *Post) Slug() string {
     return p.Slugs[0]
 }
 
-func (p *Post) HTML() T.HTML {
+func (p *Post) withImages() (string, error) {
+    t, err := TT.New(p.Title).Parse(p.Body)
+    if err != nil {
+        return "", err
+    }
+    var buffer bytes.Buffer
+    err = t.Execute(&buffer, p.Images)
+    if err != nil {
+        return "", err
+    }
+    return buffer.String(), nil
+}
+
+func (p *Post) HTML() (T.HTML, error) {
+    body, err := p.withImages()
+    if err != nil {
+        return "", err
+    }
     extensions := md.EXTENSION_SPACE_HEADERS | md.EXTENSION_TABLES | md.EXTENSION_NO_INTRA_EMPHASIS | md.EXTENSION_STRIKETHROUGH
     renderer := md.HtmlRenderer(0, "", "")
-    return T.HTML(md.Markdown([]byte(p.Body), renderer, extensions))
+    return T.HTML(md.Markdown([]byte(body), renderer, extensions)), nil
 }
 
 func (p *Post) InYear(year int) bool {
@@ -52,7 +70,8 @@ func (p *Post) HasSlug(slug string) bool {
 }
 
 func (p *Post) Clean() string {
-    z := html.NewTokenizer(strings.NewReader(string(p.HTML())))
+    h, _ := p.HTML()
+    z := html.NewTokenizer(strings.NewReader(string(h)))
     var buffer bytes.Buffer
 loop:
     for {
