@@ -3,7 +3,7 @@ title: My First Post
 category: editorial
 description: Just a first post to get things going.
 published: true
-publishedon: 10 Dec 12 10:00 MST
+publishedon: 10 Dec 2012 10:00 MST
 tags:
     - meta
     - foo

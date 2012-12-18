@@ -4,6 +4,8 @@ import (
     "time"
 )
 
+const TimeFormat = "02 Jan 2006 15:04 MST"
+
 type Time struct {
     time.Time
 }
@@ -13,7 +15,7 @@ func (t *Time) SetYAML(tag string, value interface{}) bool {
     if !ok {
         return false
     }
-    parsed, err := time.Parse(time.RFC822, s)
+    parsed, err := time.Parse(TimeFormat, s)
     if err != nil {
         return false
     }

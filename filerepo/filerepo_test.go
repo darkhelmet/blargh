@@ -125,3 +125,15 @@ func (ts *TestSuite) BenchmarkSearch(c *C) {
         good.Search("old first")
     }
 }
+
+// func (ts *TestSuite) TestLoadVerboseLogging(c *C) {
+//     verboselogging, err := filerepo.New("test/verboselogging")
+//     c.Assert(err, IsNil)
+//     c.Assert(verboselogging.Len(), Equals, 179)
+// }
+
+// func (ts *TestSuite) BenchmarkLoadVerboseLogging(c *C) {
+//     for i := 0; i < c.N; i++ {
+//         filerepo.New("test/verboselogging")
+//     }
+// }
