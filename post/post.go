@@ -17,7 +17,7 @@ import (
 var ws = regexp.MustCompile(`\s+`)
 
 type Post struct {
-    Id                                 string
+    Id, Author                         string
     Title, Category, Description, Body string
     Published                          bool
     Slugs, Terms, Tags                 []string

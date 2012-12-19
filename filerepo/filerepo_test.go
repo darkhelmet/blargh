@@ -59,10 +59,6 @@ func (ts *TestSuite) TestFindByTag(c *C) {
     c.Assert(len(posts), Equals, 2)
     c.Assert(posts[0].Title, Equals, "My Second Post")
     c.Assert(posts[1].Title, Equals, "My First Post")
-
-    posts, err = good.FindByTag("shazam")
-    c.Assert(err, NotNil)
-    c.Assert(err, FitsTypeOf, NotFound(""))
 }
 
 func (ts *TestSuite) BenchmarkFindByTag(c *C) {
@@ -81,10 +77,6 @@ func (ts *TestSuite) TestFindByCategory(c *C) {
     c.Assert(err, IsNil)
     c.Assert(len(posts), Equals, 1)
     c.Assert(posts[0].Title, Equals, "My Second Post")
-
-    posts, err = good.FindByCategory("gaming")
-    c.Assert(err, NotNil)
-    c.Assert(err, FitsTypeOf, NotFound(""))
 }
 
 func (ts *TestSuite) BenchmarkFindByCategory(c *C) {
@@ -128,10 +120,6 @@ func (ts *TestSuite) TestSearch(c *C) {
     c.Assert(len(posts), Equals, 2)
     c.Assert(posts[0].Title, Equals, "My First Post")
     c.Assert(posts[1].Title, Equals, "An Old Post")
-
-    posts, err = good.Search("warhammer")
-    c.Assert(err, NotNil)
-    c.Assert(err, FitsTypeOf, NotFound(""))
 }
 
 func (ts *TestSuite) BenchmarkSearch(c *C) {

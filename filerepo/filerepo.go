@@ -118,19 +118,11 @@ func (fr *FileRepo) Len() int {
 }
 
 func (fr *FileRepo) FindByTag(tag string) (post.PostList, error) {
-    posts := fr.tagIndex[tag].PublishedBefore(time.Now())
-    if len(posts) == 0 {
-        return posts, NotFound(fmt.Sprintf("No posts found for tag %#v", tag))
-    }
-    return posts, nil
+    return fr.tagIndex[tag].PublishedBefore(time.Now()), nil
 }
 
 func (fr *FileRepo) FindByCategory(category string) (post.PostList, error) {
-    posts := fr.categoryIndex[category].PublishedBefore(time.Now())
-    if len(posts) == 0 {
-        return posts, NotFound(fmt.Sprintf("No posts found for category %#v", category))
-    }
-    return posts, nil
+    return fr.categoryIndex[category].PublishedBefore(time.Now()), nil
 }
 
 func (fr *FileRepo) FindLatest(limit int) (post.PostList, error) {
@@ -159,11 +151,7 @@ func (fr *FileRepo) Search(query string) (post.PostList, error) {
     }
     posts := ps.Values()
     sort.Sort(posts)
-    posts = posts.PublishedBefore(time.Now())
-    if len(posts) == 0 {
-        return posts, NotFound(fmt.Sprintf("No posts found for query %#v", query))
-    }
-    return posts, nil
+    return posts.PublishedBefore(time.Now()), nil
 }
 
 func (fr *FileRepo) FindBySlug(slug string) (*post.Post, error) {
