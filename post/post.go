@@ -60,6 +60,10 @@ func (p *Post) InMonth(month time.Month) bool {
     return p.PublishedOn.Month() == month
 }
 
+func (p *Post) OnDay(year int, month time.Month, day int) bool {
+    return p.InYear(year) && p.InMonth(month) && p.PublishedOn.Day() == day
+}
+
 func (p *Post) HasSlug(slug string) bool {
     for _, s := range p.Slugs {
         if s == slug {
@@ -90,6 +94,9 @@ func FromFile(path string) (*Post, error) {
     content, err := fmatter.ReadFile(path, &post)
     if err != nil {
         return nil, fmt.Errorf("post: failed reading post: %s", err)
+    }
+    if len(post.Slugs) == 0 {
+        return nil, fmt.Errorf("post: %#v must have at least 1 slug", path)
     }
     post.Body = string(content)
     if post.Id == "" {

@@ -1,7 +1,6 @@
 package blargh
 
 import (
-    "errors"
     "github.com/darkhelmet/blargh/filerepo"
     . "github.com/darkhelmet/blargh/post"
     "time"
@@ -13,10 +12,10 @@ func NewFileRepo(dir string) (Repo, error) {
 
 type Repo interface {
     Len() int
-    FindByTag(string) ([]*Post, error)
-    FindByCategory(string) ([]*Post, error)
-    FindLatest(limit int) ([]*Post, error)
-    FindByMonth(year int, month time.Month) ([]*Post, error)
-    Search(string) ([]*Post, error)
-    FindByPermalink(year int, month time.Month, day int, slug string) (*Post, error)
+    FindByTag(string) (PostList, error)
+    FindByCategory(string) (PostList, error)
+    FindLatest(limit int) (PostList, error)
+    FindByMonth(year int, month time.Month) (PostList, error)
+    Search(string) (PostList, error)
+    FindBySlug(string) (*Post, error)
 }

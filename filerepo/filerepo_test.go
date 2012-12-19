@@ -1,6 +1,7 @@
 package filerepo_test
 
 import (
+    . "github.com/darkhelmet/blargh/errors"
     "github.com/darkhelmet/blargh/filerepo"
     . "launchpad.net/gocheck"
     "testing"
@@ -29,7 +30,7 @@ func (ts *TestSuite) TestErrorsOnNoDirectory(c *C) {
 }
 
 func (ts *TestSuite) TestOnlyLoadPublished(c *C) {
-    c.Assert(good.Len(), Equals, 3)
+    c.Assert(good.Len(), Equals, 4)
 }
 
 func (ts *TestSuite) TestLatest(c *C) {
@@ -53,10 +54,15 @@ func (ts *TestSuite) TestShouldSortOnPublishedOn(c *C) {
 }
 
 func (ts *TestSuite) TestFindByTag(c *C) {
-    posts, _ := good.FindByTag("meta")
+    posts, err := good.FindByTag("meta")
+    c.Assert(err, IsNil)
     c.Assert(len(posts), Equals, 2)
     c.Assert(posts[0].Title, Equals, "My Second Post")
     c.Assert(posts[1].Title, Equals, "My First Post")
+
+    posts, err = good.FindByTag("shazam")
+    c.Assert(err, NotNil)
+    c.Assert(err, FitsTypeOf, NotFound(""))
 }
 
 func (ts *TestSuite) BenchmarkFindByTag(c *C) {
@@ -75,6 +81,10 @@ func (ts *TestSuite) TestFindByCategory(c *C) {
     c.Assert(err, IsNil)
     c.Assert(len(posts), Equals, 1)
     c.Assert(posts[0].Title, Equals, "My Second Post")
+
+    posts, err = good.FindByCategory("gaming")
+    c.Assert(err, NotNil)
+    c.Assert(err, FitsTypeOf, NotFound(""))
 }
 
 func (ts *TestSuite) BenchmarkFindByCategory(c *C) {
@@ -118,12 +128,27 @@ func (ts *TestSuite) TestSearch(c *C) {
     c.Assert(len(posts), Equals, 2)
     c.Assert(posts[0].Title, Equals, "My First Post")
     c.Assert(posts[1].Title, Equals, "An Old Post")
+
+    posts, err = good.Search("warhammer")
+    c.Assert(err, NotNil)
+    c.Assert(err, FitsTypeOf, NotFound(""))
 }
 
 func (ts *TestSuite) BenchmarkSearch(c *C) {
     for i := 0; i < c.N; i++ {
         good.Search("old first")
     }
+}
+
+func (ts *TestSuite) TestFindBySlug(c *C) {
+    post, err := good.FindBySlug("my-first-post")
+    c.Assert(err, IsNil)
+    c.Assert(post, NotNil)
+    c.Assert(post.Title, Equals, "My First Post")
+
+    post, err = good.FindBySlug("404")
+    c.Assert(err, FitsTypeOf, NotFound(""))
+    c.Assert(post, IsNil)
 }
 
 // func (ts *TestSuite) TestLoadVerboseLogging(c *C) {

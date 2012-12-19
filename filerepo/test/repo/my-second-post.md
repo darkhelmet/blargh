@@ -7,6 +7,8 @@ publishedon: 12 Dec 2012 10:00 MST
 tags:
     - batman 
     - meta
+slugs:
+    - my-second-post
 ---
 This is my second post.
 

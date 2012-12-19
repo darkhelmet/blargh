@@ -45,6 +45,11 @@ func (ts *TestSuite) TestLoadPost(c *C) {
     c.Assert(post.Tags, DeepEquals, []string{"meta", "foo", "bar"})
 }
 
+func (ts *TestSuite) TestRequireSlugs(c *C) {
+    _, err := post.FromFile("test/no-slug.md")
+    c.Assert(err, NotNil)
+}
+
 func (ts *TestSuite) TestSetsIdIfNoneSet(c *C) {
     post, err := post.FromFile("test/my-second-post.md")
     c.Assert(err, IsNil)

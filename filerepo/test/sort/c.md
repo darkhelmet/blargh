@@ -1,6 +1,8 @@
 ---
 title: C
 published: true
-publishedon: 20 Dec 2012 10:00 MST
+publishedon: 17 Dec 2012 10:00 MST
+slugs:
+    - c
 ---
 C
