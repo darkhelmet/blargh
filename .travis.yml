@@ -1,1 +1,2 @@
 language: go
+before install: sudo apt-get install bzr

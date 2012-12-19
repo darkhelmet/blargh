@@ -19,6 +19,7 @@ var ws = regexp.MustCompile(`\s+`)
 type Post struct {
     Id, Author                         string
     Title, Category, Description, Body string
+    HTML                               T.HTML
     Published                          bool
     Slugs, Terms, Tags                 []string
     PublishedOn                        *Time
@@ -42,7 +43,7 @@ func (p *Post) withImages() (string, error) {
     return buffer.String(), nil
 }
 
-func (p *Post) HTML() (T.HTML, error) {
+func (p *Post) html() (T.HTML, error) {
     body, err := p.withImages()
     if err != nil {
         return "", err
@@ -74,8 +75,7 @@ func (p *Post) HasSlug(slug string) bool {
 }
 
 func (p *Post) Clean() string {
-    h, _ := p.HTML()
-    z := html.NewTokenizer(strings.NewReader(string(h)))
+    z := html.NewTokenizer(strings.NewReader(string(p.HTML)))
     var buffer bytes.Buffer
 loop:
     for {
@@ -106,5 +106,10 @@ func FromFile(path string) (*Post, error) {
         }
         post.Id = guid.String()
     }
+    html, err := post.html()
+    if err != nil {
+        return nil, fmt.Errorf("post: failed rendering HTML: %s", err)
+    }
+    post.HTML = html
     return &post, nil
 }
