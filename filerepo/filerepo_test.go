@@ -115,11 +115,10 @@ func (ts *TestSuite) TestSearch(c *C) {
     c.Assert(posts[1].Title, Equals, "My First Post")
     c.Assert(posts[2].Title, Equals, "An Old Post")
 
-    posts, err = good.Search("old first")
+    posts, err = good.Search("old post")
     c.Assert(err, IsNil)
-    c.Assert(len(posts), Equals, 2)
-    c.Assert(posts[0].Title, Equals, "My First Post")
-    c.Assert(posts[1].Title, Equals, "An Old Post")
+    c.Assert(len(posts), Equals, 1)
+    c.Assert(posts[0].Title, Equals, "An Old Post")
 }
 
 func (ts *TestSuite) BenchmarkSearch(c *C) {

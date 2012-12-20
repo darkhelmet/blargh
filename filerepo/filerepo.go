@@ -143,13 +143,20 @@ func (fr *FileRepo) FindByMonth(year int, month time.Month) (post.PostList, erro
 }
 
 func (fr *FileRepo) Search(query string) (post.PostList, error) {
-    ps := post.NewPostSet()
+    var ps *post.PostSet
     for tok := range tokens(query) {
         if index, ok := fr.searchIndex[tok.String()]; ok {
-            ps.AddSet(index)
+            if ps == nil {
+                ps = index
+            } else {
+                ps = ps.Intersection(index)
+            }
         }
     }
-    posts := ps.Values()
+    var posts post.PostList
+    if ps != nil {
+        posts = ps.Values()
+    }
     sort.Sort(posts)
     return posts.PublishedBefore(time.Now()), nil
 }
