@@ -39,7 +39,7 @@ func (ts *TestSuite) TestLoadPost(c *C) {
 * Bar
 * Baz`)
     c.Assert(post.Published, Equals, true)
-    c.Assert(post.PublishedOn.Time, Equals, monday)
+    c.Assert(post.PublishedOn.Equal(monday), Equals, true)
     c.Assert(post.Slugs, DeepEquals, []string{"my-first-post", "my-fist-post"})
     c.Assert(post.Slug(), Equals, "my-first-post")
     c.Assert(post.Tags, DeepEquals, []string{"meta", "foo", "bar"})
