@@ -13,7 +13,7 @@ func Test(t *testing.T) { TestingT(t) }
 type TestSuite struct{}
 
 func mustParseTime(s string) time.Time {
-    t, err := time.Parse(time.RFC822, s)
+    t, err := time.Parse(post.TimeFormat, s)
     if err != nil {
         panic(err)
     }
@@ -22,7 +22,7 @@ func mustParseTime(s string) time.Time {
 
 var (
     _      = Suite(&TestSuite{})
-    monday = mustParseTime("10 Dec 12 10:00 MST")
+    monday = mustParseTime("10 Dec 2012 10:00 MST")
 )
 
 func (ts *TestSuite) TestLoadPost(c *C) {
