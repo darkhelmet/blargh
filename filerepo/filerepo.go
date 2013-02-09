@@ -130,10 +130,11 @@ func (fr *FileRepo) FindByCategory(category string) (post.PostList, error) {
 }
 
 func (fr *FileRepo) FindLatest(limit int) (post.PostList, error) {
-    if fr.Len() < limit {
-        limit = fr.Len()
+    filtered := fr.posts.PublishedBefore(time.Now())
+    if len(filtered) < limit {
+        limit = len(filtered)
     }
-    return fr.posts.PublishedBefore(time.Now())[0:limit], nil
+    return filtered[0:limit], nil
 }
 
 func (fr *FileRepo) FindByMonth(year int, month time.Month) (post.PostList, error) {

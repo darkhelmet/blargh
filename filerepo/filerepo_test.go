@@ -47,6 +47,12 @@ func (ts *TestSuite) TestLatest(c *C) {
     c.Assert(latest[1].Title, Equals, "My First Post")
 }
 
+func (tst *TestSuite) TestLatestNoNil(c *C) {
+    latest, err := good.FindLatest(4)
+    c.Assert(err, IsNil)
+    c.Assert(len(latest), Equals, 3)
+}
+
 func (ts *TestSuite) TestShouldSortOnPublishedOn(c *C) {
     r, err := filerepo.New("test/sort")
     c.Assert(err, IsNil)
