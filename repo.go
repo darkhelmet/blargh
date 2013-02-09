@@ -12,6 +12,7 @@ func NewFileRepo(dir string) (Repo, error) {
 
 type Repo interface {
     Len() int
+    All() (PostList, error)
     FindByTag(string) (PostList, error)
     FindByCategory(string) (PostList, error)
     FindLatest(limit int) (PostList, error)

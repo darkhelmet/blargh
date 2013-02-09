@@ -33,6 +33,12 @@ func (ts *TestSuite) TestOnlyLoadPublished(c *C) {
     c.Assert(good.Len(), Equals, 4)
 }
 
+func (ts *TestSuite) TestAll(c *C) {
+    all, err := good.All()
+    c.Assert(err, IsNil)
+    c.Assert(len(all), Equals, 4)
+}
+
 func (ts *TestSuite) TestLatest(c *C) {
     latest, err := good.FindLatest(3)
     c.Assert(err, IsNil)

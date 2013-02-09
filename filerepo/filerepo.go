@@ -117,6 +117,10 @@ func (fr *FileRepo) Len() int {
     return len(fr.posts)
 }
 
+func (fr *FileRepo) All() (post.PostList, error) {
+    return fr.posts[:], nil
+}
+
 func (fr *FileRepo) FindByTag(tag string) (post.PostList, error) {
     return fr.tagIndex[tag].PublishedBefore(time.Now()), nil
 }
