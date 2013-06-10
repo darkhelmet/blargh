@@ -8,6 +8,7 @@ import (
     "github.com/nu7hatch/gouuid"
     md "github.com/russross/blackfriday"
     T "html/template"
+    "os"
     "regexp"
     "strings"
     TT "text/template"
@@ -23,6 +24,7 @@ type Post struct {
     Published                          bool
     Slugs, Terms, Tags                 []string
     PublishedOn                        *Time
+    UpdatedAt                          *Time
     Images                             map[string]map[string]string
 }
 
@@ -91,6 +93,11 @@ loop:
 
 func FromFile(path string) (*Post, error) {
     var post Post
+    stat, err := os.Stat(path)
+    if err != nil {
+        return nil, fmt.Errorf("post: failed to stat file: %s", err)
+    }
+    post.UpdatedAt = &Time{stat.ModTime()}
     content, err := fmatter.ReadFile(path, &post)
     if err != nil {
         return nil, fmt.Errorf("post: failed reading post: %s", err)
