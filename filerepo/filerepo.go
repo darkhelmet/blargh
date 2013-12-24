@@ -103,12 +103,13 @@ func (fr *FileRepo) index() error {
             ps.Add(p)
         }
 
-        slug := p.Slug()
-        _, found := fr.slugIndex[slug]
-        if found {
-            return fmt.Errorf("slug %#v already found", slug)
+        for _, slug := range p.Slugs {
+            _, found := fr.slugIndex[slug]
+            if found {
+                return fmt.Errorf("slug %#v already found", slug)
+            }
+            fr.slugIndex[slug] = p
         }
-        fr.slugIndex[slug] = p
     }
     return nil
 }
