@@ -50,7 +50,7 @@ func (p *Post) html() (T.HTML, error) {
     if err != nil {
         return "", err
     }
-    extensions := md.EXTENSION_SPACE_HEADERS | md.EXTENSION_TABLES | md.EXTENSION_NO_INTRA_EMPHASIS | md.EXTENSION_STRIKETHROUGH
+    extensions := md.EXTENSION_SPACE_HEADERS | md.EXTENSION_TABLES | md.EXTENSION_NO_INTRA_EMPHASIS | md.EXTENSION_STRIKETHROUGH | md.EXTENSION_FOOTNOTES
     renderer := md.HtmlRenderer(0, "", "")
     return T.HTML(md.Markdown([]byte(body), renderer, extensions)), nil
 }
