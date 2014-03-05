@@ -72,6 +72,7 @@ func (fr *FileRepo) preload() error {
 func tokens(bits ...string) nltk.TokenChan {
     tokens := tokenizer.Simple(bits...)
     tokens = filter.Superstrip(tokens)
+    tokens = filter.Stopword(tokens)
     tokens = filter.SnowballStemmer(tokens)
     tokens = filter.DoubleMetaphone(tokens)
     return tokens
